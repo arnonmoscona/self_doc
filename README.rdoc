@@ -2,6 +2,11 @@
 
 * http://github.com/arnonmoscona/self_doc
 
+= Warning
+
+* This is very experimental
+* Not ready for anyone to use yet!!!
+
 == DESCRIPTION:
 
 <tt>SelfDocumentaion</tt> is a simple DSL for supporting self documenting classes.
