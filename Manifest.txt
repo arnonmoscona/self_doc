@@ -1,6 +1,7 @@
 History.txt
 Manifest.txt
 PostInstall.txt
+DevNotes.txt
 README.rdoc
 Rakefile
 lib/self_doc.rb

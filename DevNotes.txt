@@ -1,0 +1,2 @@
+* All the meta-programming stuff comes from the afshin gem
+* Should look at Seattle.rb un

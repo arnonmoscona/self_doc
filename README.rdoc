@@ -1,32 +1,120 @@
 = self_doc
 
-* http://github.com/#{github_username}/#{project_name}
+* http://github.com/arnonmoscona/self_doc
 
 == DESCRIPTION:
 
-FIX (describe your package)
+<tt>SelfDocumentaion</tt> is a simple DSL for supporting self documenting classes.
+Why do we need something other than RDoc?
+For the same reason that rake tasks can be self describing using the <tt>describe</tt> method.
+RDoc "lives" with the code and generate documentation for browsing. <tt>SelfDocumentaion</tt> generates
+documentation that "lives" inside the run-time code and can then be rendered at run time.
+In our particular situation at FanSnap.com, we have many back-end jobs that are generally launched using a rake
+based facility. We want to be able to document the different options available for a job much like
+<tt>rake --describe</tt> would do for rake tasks. <tt>SelfDocumentaion</tt> was created to satisfy this need.
+
+This DSL is a bit more elaborate than what rake provides with <tt>describe</tt> and <i>very superficially</i> resembles
+Markaby or Parkaby.
+
+The initial version of <tt>SelfDocumentaion</tt> only renders the documentation for terminal output.
+Later versions may add HTML support.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* This is the first DSL version
+* Has plain text rendering
+* Does not have HTML rendering yet
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+Writing documentation (example):
+
+  gem 'self_doc'
+
+  class MyClass
+    include SelfDoc
+
+    documentation do
+      h1 "constructor parameters"
+      text "The constructor takes one argument and an options hash."                 nderland
+      describe_method :new
+      argument :mode, "which mode to run in. Allowed values:"
+        optional
+        default :new
+        ul
+          li ":new - does the new thing"
+          li ":old - does the old thing"
+      options_hash
+        key :debug, "turns debug on"
+          default false
+        key :verbose
+        key :default_value, "duh..."
+      block "lets you do the real work"
+    end
+
+    def initialize(mode, opt={})
+      #...
+    end
+  end
+
+
+* Note that this does not require any blocks (except for the outermost one) so as to keep the text as English-like as possible.
+* You may use any number of documentation "sections" in your code, they will basically appens to a class variable
+  that holds an ordered list of sections. The rendering methods allow you to render the first section,
+  all of them or any range of sections.
+
+Documentation methods:
+* <tt>documentation</tt> starts a new documentation section. At least one is required to do anything. Until a new call
+  is made - all the other methods will operate in the context of the latest section to be started. During this block
+  all the documentation calls override whatever you may have defined by temporarily aliasing existing methods. Once
+  the block exits then any methods previously defined are restored.
+* <tt>h1</tt> creates a "header level" text that will be emphasized in some way (depending on the formatter use)
+* <tt>text</tt> takes a single text string as a parameter. Multiple consecutive are considered part of the same paragraph.
+  If called with no argument this is taken as paragraph termination. The text method may be called in the context of any
+  part of the documentation and the content will will be generally aligned (as best achieved) with the associated (parent)
+  node.
+* <tt>ul</tt> and <tt>ol</tt> start a bullet list or an ordered list respectively, and can be called in any context that
+  <tt>text</tt> can be called in.
+* <tt>li</tt> a list item. Takes one parameter that is the content of the list item
+* <tt>describe_method</tt> takes exactly one argument and starts a method documentation sub-section, setting the context to
+  all that follows until the next <tt>describe_method</tt> or <tt>documentation</tt> call.
+* <tt>argument</tt> may only be called in the context of a method (demarcated by <tt>describe_method</tt>). The first argument
+  is required and is the argument name (Symbol or String). A second <tt>description</tt> argument is optional.
+  You may not call this method in the same method context after calling <tt>options_hash</tt>
+* <tt>optional</tt> may be called in the context of an <tt>argument</tt> or an options hahs <tt>key</tt>. Denotes the argument as an
+  optional argument.
+* <tt>default</tt> also may be called in the context of an <tt>argument</tt> or an doptions hash <tt>key</tt>.
+  Takes one argument that may be a <tt>String</tt>, a <tt>Symbol</tt>, <tt>nil</tt>, <tt>true</tt>,
+  or <tt>false</tt>. Anything else will have to_s called on it.
+* <tt>options_hash</tt> may only be called as the last argument of a method context (except for a
+  possible <tt>block</tt> to follow), and sets the context for <tt>key</tt> calls
+* <tt>key</tt> may be called in the context of a an <tt>options_hash</tt>. Takes at least the key name as a
+  <tt>Symbol</tt> or <tt>String</tt> and optionally a description of the key
+* <tt>block</tt> may be calles as the last call in the context of a <tt>describe_method</tt> to describe the blockl the
+  method takes
+
+Printing Documentation:
+
+  puts MyClass.render_documentation # => prints the documentation in the default format (:text)
+  puts MyClass.render_documentation(:format=>:plain) # => prints the documentation in the text format
+  puts MyClass.render_documentation(:section=>:first) # => prints only the first section of the documentation
+  puts MyClass.render_documentation(:section=>:all) # => same as puts MyClass.documentation
+  puts MyClass.render_documentation(:section=>[0,1,5]) # => prints the specified sections (zero based). Silently ignores sections that do not exist.
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* RDoc
+* Afshin
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+<tt>sudo gem install self_doc</tt>
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIXME full name
+Copyright (c) 2009 Arnon Moscona
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

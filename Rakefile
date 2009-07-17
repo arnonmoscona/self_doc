@@ -13,7 +13,9 @@ $hoe = Hoe.new('self_doc', SelfDoc::VERSION) do |p|
   #   ['activesupport','>= 2.0.2'],
   # ]
   p.extra_dev_deps = [
-    ['newgem', ">= #{::Newgem::VERSION}"]
+    ['newgem', ">= #{::Newgem::VERSION}"],
+    ['rdoc', ">= 2.4.3"],
+    ['afshin', ">= 0.1.0"]
   ]
   
   p.clean_globs |= %w[**/.DS_Store tmp *.log]
