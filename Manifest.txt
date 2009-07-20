@@ -1,12 +1,13 @@
 History.txt
 Manifest.txt
 PostInstall.txt
-DevNotes.txt
 README.rdoc
 Rakefile
-lib/self_doc.rb
+lib/gemx.rb
 script/console
 script/destroy
 script/generate
-test/test_helper.rb
-test/test_self_doc.rb
+spec/gemx_spec.rb
+spec/spec.opts
+spec/spec_helper.rb
+tasks/rspec.rake

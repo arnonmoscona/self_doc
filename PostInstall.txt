@@ -1,5 +1,5 @@
 
-For more information on self_doc, see http://self_doc.rubyforge.org
+For more information on gemx, see http://gemx.rubyforge.org
 
 NOTE: Change this information in PostInstall.txt 
 You can also delete it if you don't want it.
