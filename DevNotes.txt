@@ -1,2 +1,13 @@
-* All the meta-programming stuff comes from the afshin gem
-* Should look at Seattle.rb un
+* May not need afshin.gem after all...
+can probably do something like
+
+def documentation(&block)
+  doc_instance = whatever()
+  doc.instance_eval &block
+end
+
+For all "regular" methods this will evaluate with the doc_instance methods taking presedence over other methods.
+Moreover, you cannot write somethind that would cause the current block to delegate things like:
+  name = "x"
+to the context object, as ruby will create a local variable in the context of the block even if there is a name=()
+ method... you'd have to write slef.name="y" to do it anyway.
