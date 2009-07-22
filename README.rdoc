@@ -41,7 +41,7 @@ Writing documentation (example):
 
     documentation do
       h1 "constructor parameters"
-      text "The constructor takes one argument and an options hash."                 nderland
+      text "The constructor takes one argument and an options hash." 
       describe_method :new
       argument :mode, "which mode to run in. Allowed values:"
         optional
